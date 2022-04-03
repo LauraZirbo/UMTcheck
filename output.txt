@@ -1,0 +1,9 @@
+0 0 0
+1 --a-
+1 --a-
+2 --a-A
+3 --a-A1
+3 --a-A1
+3 --a-A1
+The minimum number of changes that need to be made are: 3
+A sugestion which has had these changes made is: --a-A1
