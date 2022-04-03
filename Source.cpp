@@ -19,7 +19,8 @@ void getData(string s, int& lc, int& uc, int& digits) {
 	}
 }
 
-int repetition(string& s, int& lc, int& uc, int& digits, int& nrOfChanges) {
+int repetition(string& s, int& lc, int& uc, int& digits) {
+	int nrOfChanges = 0;
 	char a = s[0], b = s[1];
 	char newChar;
 	string newString1 = "", newString2 = "";
@@ -34,9 +35,10 @@ int repetition(string& s, int& lc, int& uc, int& digits, int& nrOfChanges) {
 		{
 			if (s[i] == a)
 			{
-				//WEATHER WE ADD, DELETE OR SIMPLY CHANGE A CHARACTER, BASED ON THE NUMBER OF CHARACTER  ALREADY IN THE STRING 
+				//CHEKC IF WE ADD, DELETE OR SIMPLY CHANGE A CHARACTER, BASED ON THE NUMBER OF CHARACTERS ALREADY IN THE STRING 
 				// ONE CHANGE WILL BE MADE
 				nrOfChanges++;
+				//IF THE STRING IS ALREADY TOO LONG WE DELETE THE REPEATING CHARACTER, THUS, POSSIBLY ELIMINATING ANOTHER ISSUE WITH THE PASSWORD
 				if (lenght > 20)
 				{
 					lenght--;
@@ -49,20 +51,18 @@ int repetition(string& s, int& lc, int& uc, int& digits, int& nrOfChanges) {
 					newString1 = s.substr(0, i);
 					newString2 = s.substr(i + 1, s.size() - (i + 1));
 					s = newString1 + newString2;
+					//WE USE THE OK VALUE TO CHECK IF WE'VE DELETED A CHARACTER. IF SO, WE DON'T HAVE TO CHANGE a AND b AT THE END
 					ok = 1;
 				}
 				else
 				{
+					//IF THE STRING IS TOO SHORT WE BREAK THE REPEATING SEQUENCE BY ADDING ANOTHER CHARACTER INBETWEEN
 					if (lenght < 6)
 					{
 						lenght++;
 						newString1 = s.substr(0, i);
 						newString2 = s.substr(i, s.size() - i);
-						//IF THE CHARACTER IS NIETHER SPACEBAR NOR ENDLINE
-						if (int(s[i]) != 9 && int(s[i]) != 31)
-							char newChar = s[i] + 1;
-						else
-							newChar = ' ';
+						char newChar = s[i] + 1;
 						if (lc == 0)
 						{
 							//WE DON'T HAVE TO CHECK IF THE REPEATING CHARACTER IS A SINCE IF lc IS 0 IT CAN'T BE THE SAME CHARACTER
@@ -77,7 +77,7 @@ int repetition(string& s, int& lc, int& uc, int& digits, int& nrOfChanges) {
 							}
 							else
 							{
-								//IF WE GET TO THIS BRANCH WE MIGHT AS WELL AD A DIGIT SINCE IN THE BEST CASE ADDING A DIGIT HELPS (digit == 0)
+								//IF WE GET TO THIS BRANCH WE MIGHT AS WELL ADD A DIGIT SINCE IN THE BEST CASE ADDING A DIGIT HELPS (digit == 0)
 								// AND IN THE WORST CASE IT MAKES NO DIFFERENCE WHAT WE ADD
 								if (s[i] != '1')
 									newChar = '1';
@@ -91,6 +91,8 @@ int repetition(string& s, int& lc, int& uc, int& digits, int& nrOfChanges) {
 					}
 					else
 					{
+						//IF THE LENGHT IS ALREADY GOOD, WE ONLY CHANE THE PASSWORD, TO PREVENT CREATING OTHER PROBLEMS
+						//HERE WE CHECK TO SEE WHICH CHARACTER WOULD BE BEST TO CHANGE 
 						if (s[i] >= 'a' && s[i] <= 'z')
 						{
 							if (digits == 0)
@@ -174,6 +176,28 @@ int repetition(string& s, int& lc, int& uc, int& digits, int& nrOfChanges) {
 										}
 									}
 								}
+								else {
+									if (lc == 0)
+									{
+										s[i] = 'a';
+										lc++;
+									}
+									else
+									{
+										if (uc == 0)
+										{
+											s[i] = 'A';
+											uc++;
+										}
+										else
+										{
+											s[i] = '1';
+											digits++;
+											//WE MIGH AS WELL CHANGE IT INTO A DIGIT SINCE IN THE BEST CASE IT HELPS AND IN THE WORST CASE IT DOESN'T MATTER 
+										}
+									}
+
+								}
 							}
 						}
 
@@ -194,8 +218,9 @@ int repetition(string& s, int& lc, int& uc, int& digits, int& nrOfChanges) {
 	return nrOfChanges;
 }
 
-int lowerCase(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
+int lowerCase(string& s, int& lc, int& uc, int& digits)
 {
+	int nrOfChanges = 0;
 	int lenght = s.size();
 	if (lc == 0)
 	{
@@ -249,8 +274,9 @@ int lowerCase(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
 	return nrOfChanges;
 }
 
-int uppercase(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
+int upperCase(string& s, int& lc, int& uc, int& digits)
 {
+	int nrOfChanges = 0;
 	int lenght = s.size();
 	if (uc == 0)
 	{
@@ -306,8 +332,9 @@ int uppercase(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
 
 
 
-int checkDigits(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
+int checkDigits(string& s, int& lc, int& uc, int& digits)
 {
+	int nrOfChanges = 0;
 	int lenght = s.size();
 	if (digits == 0)
 	{
@@ -360,8 +387,9 @@ int checkDigits(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
 	return nrOfChanges;
 }
 
-int checkEnough(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
+int checkEnough(string& s, int& lc, int& uc, int& digits)
 {
+	int nrOfChanges = 0;
 	int lenght = s.size();
 	char newChar = s[s.size() - 1] + 1;
 	while (lenght < 6)
@@ -377,8 +405,9 @@ int checkEnough(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
 	return nrOfChanges;
 }
 
-int checkTooMany(string& s, int& lc, int& uc, int& digits, int& nrOfChanges)
+int checkTooMany(string& s, int& lc, int& uc, int& digits)
 {
+	int nrOfChanges = 0;
 	int lenght = s.size();
 	int i = lenght - 1;
 	while (lenght > 20 && i >= 0)
@@ -448,13 +477,12 @@ int main()
 	string s;
 	f >> s;
 	getData(s, lc, uc, digits);
-	g << lc << " " << uc << " " << digits << endl;
-	g << repetition(s, lc, uc, digits, nrOfChanges) << " " << s << endl;
-	g << lowerCase(s, lc, uc, digits, nrOfChanges) << " " << s << endl;
-	g << uppercase(s, lc, uc, digits, nrOfChanges) << " " << s << endl;
-	g << checkDigits(s, lc, uc, digits, nrOfChanges) << " " << s << endl;
-	g << checkEnough(s, lc, uc, digits, nrOfChanges) << " " << s << endl;
-	g << checkTooMany(s, lc, uc, digits, nrOfChanges) << " " << s << endl;
+	nrOfChanges = nrOfChanges + repetition(s, lc, uc, digits);
+	nrOfChanges = nrOfChanges + lowerCase(s, lc, uc, digits);
+	nrOfChanges = nrOfChanges + upperCase(s, lc, uc, digits);
+	nrOfChanges = nrOfChanges + checkDigits(s, lc, uc, digits);
+	nrOfChanges = nrOfChanges + checkEnough(s, lc, uc, digits);
+	nrOfChanges = nrOfChanges + checkTooMany(s, lc, uc, digits);
 	g << "The minimum number of changes that need to be made are: " << nrOfChanges << endl;
 	g << "A sugestion which has had these changes made is: " << s;
 	f.close();
